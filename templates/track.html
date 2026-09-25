@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Track Report</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🔎 Track Your Report</h1>
+
+<form method="POST">
+
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <input
+        type="text"
+        name="report_id"
+        placeholder="Enter Report ID"
+        required>
+
+    <button type="submit">
+        Track
+    </button>
+
+</form>
+
+
+{% if report %}
+
+<div class="report-card">
+
+    <h2>{{ report["report_id"] }}</h2>
+
+    <p>
+        Category:
+        {{ report["category"] }}
+    </p>
+
+    <p>
+        AI Category:
+        {{ report["ai_category"] }}
+    </p>
+
+    <p>
+        Risk:
+        {{ report["risk_level"] }}
+    </p>
+
+    <p>
+        Status:
+        {{ report["status"] }}
+    </p>
+
+    <p>
+        Location:
+        {{ report["location"] }}
+    </p>
+
+</div>
+
+{% endif %}
+
+</div>
+
+</body>
+
+</html>

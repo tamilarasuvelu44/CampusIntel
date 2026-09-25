@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>
+        Incident {{ report["report_id"] }}
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for(
+            'static',
+            filename='css/style.css'
+        ) }}"
+    >
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>🛡️ CampusIntel</h1>
+
+    <p>Incident Investigation</p>
+
+</header>
+
+
+<div class="container">
+
+    <a
+        href="/admin/dashboard"
+        class="button"
+    >
+        ← Back to Dashboard
+    </a>
+
+
+    <div class="incident-header">
+
+        <h2>
+            {{ report["report_id"] }}
+        </h2>
+
+        <span class="risk-badge">
+
+            {{ report["risk_level"] }}
+
+        </span>
+
+    </div>
+
+
+    <!-- INCIDENT INFORMATION -->
+
+    <div class="incident-card">
+
+        <h2>📋 Incident Information</h2>
+
+        <p>
+            <strong>Category:</strong>
+
+            {{ report["category"] }}
+
+        </p>
+
+
+        <p>
+            <strong>AI Category:</strong>
+
+            {{ report["ai_category"] }}
+
+        </p>
+
+
+        <p>
+            <strong>Severity:</strong>
+
+            {{ report["severity"] }}
+
+        </p>
+
+
+        <p>
+            <strong>Risk Level:</strong>
+
+            {{ report["risk_level"] }}
+
+        </p>
+
+
+        <p>
+            <strong>Location:</strong>
+
+            {{ report["location"] }}
+
+        </p>
+
+
+        <p>
+            <strong>Status:</strong>
+
+            {{ report["status"] }}
+
+        </p>
+
+
+        <p>
+            <strong>Created:</strong>
+
+            {{ report["created_at"] }}
+
+        </p>
+
+        <a
+            href="{{ url_for('risk_analysis', report_id=report['report_id']) }}"
+            class="button"
+        >
+            AI Risk Analysis
+        </a>
+
+        {% if report["risk_score"]|int >= 60 %}
+        <div class="review-callout">
+            <h3>Review Required</h3>
+            <p>This incident has been flagged for administrator review.</p>
+        </div>
+        {% endif %}
+
+    </div>
+
+
+    <!-- DESCRIPTION -->
+
+    <div class="incident-card">
+
+        <h2>📝 Description</h2>
+
+        <p class="description">
+
+            {{ report["description"] }}
+
+        </p>
+
+    </div>
+
+
+    <!-- EVIDENCE -->
+
+    <div class="incident-card">
+
+        <h2>📎 Evidence</h2>
+
+        {% if report["evidence"] %}
+
+            <p>
+                Evidence file available.
+            </p>
+
+            <a
+                href="/admin/evidence/{{ report['evidence'] }}"
+                target="_blank"
+                class="button"
+            >
+                View Evidence
+            </a>
+
+        {% else %}
+
+            <p>
+                No evidence uploaded.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- INVESTIGATION -->
+
+    <div class="incident-card">
+
+        <h2>🔎 Investigation</h2>
+
+        <form
+            method="POST"
+            action="{{ url_for(
+                'update_incident_route',
+                report_id=report['report_id']
+            ) }}"
+        >
+
+    <input
+        type="hidden"
+        name="csrf_token"
+        value="{{ csrf_token() }}"
+    >
+
+            <label>Case Status</label>
+
+            <select name="status">
+
+                <option
+                    {% if report["status"]
+                       == "Submitted" %}
+                    selected
+                    {% endif %}
+                >
+                    Submitted
+                </option>
+
+                <option
+                    {% if report["status"]
+                       == "Under Review" %}
+                    selected
+                    {% endif %}
+                >
+                    Under Review
+                </option>
+
+                <option
+                    {% if report["status"]
+                       == "Investigation" %}
+                    selected
+                    {% endif %}
+                >
+                    Investigation
+                </option>
+
+                <option
+                    {% if report["status"]
+                       == "Action Taken" %}
+                    selected
+                    {% endif %}
+                >
+                    Action Taken
+                </option>
+
+                <option
+                    {% if report["status"]
+                       == "Resolved" %}
+                    selected
+                    {% endif %}
+                >
+                    Resolved
+                </option>
+
+            </select>
+
+
+            <label>
+                Investigation Notes
+            </label>
+
+            <textarea
+                name="investigation_notes"
+                placeholder="Enter investigation notes..."
+            >{{ report["investigation_notes"] or "" }}</textarea>
+
+
+            <button type="submit">
+
+                💾 Save Investigation
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

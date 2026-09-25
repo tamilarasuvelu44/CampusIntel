@@ -1,0 +1,9 @@
+Flask
+Flask-Mail
+Werkzeug
+scikit-learn
+pandas
+Flask-WTF
+Flask-Limiter
+python-dotenv
+gunicorn

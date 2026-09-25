@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Report Incident</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🛡️ Report an Incident</h1>
+
+<p>
+Your identity is not required for this report.
+</p>
+
+
+<form
+    method="POST"
+    enctype="multipart/form-data"
+>
+<input
+    type="hidden"
+    name="csrf_token"
+    value="{{ csrf_token() }}"
+>
+    <label>Incident Category</label>
+
+    <select name="category" required>
+
+        <option value="">Select Category</option>
+
+        <option>Cybersecurity</option>
+        <option>Bullying</option>
+        <option>Harassment</option>
+        <option>Suspicious Activity</option>
+        <option>Infrastructure</option>
+        <option>Lost & Found</option>
+        <option>Other</option>
+
+    </select>
+
+
+    <label>Description</label>
+
+    <textarea
+        name="description"
+        placeholder="Describe what happened..."
+        required>
+    </textarea>
+
+
+    <label>Location</label>
+
+    <input
+        type="text"
+        name="location"
+        placeholder="Example: Library"
+        required>
+
+
+    <label>Severity</label>
+
+    <select name="severity">
+
+        <option>Low</option>
+        <option>Medium</option>
+        <option>High</option>
+    
+    </select>
+    <label>Evidence (Optional)</label>
+
+<input
+    type="file"
+    name="evidence"
+    accept=".jpg,.jpeg,.png,.pdf"
+>
+
+<small>
+    Maximum size: 10 MB.
+    Allowed: JPG, JPEG, PNG, PDF.
+</small>
+
+
+    <button type="submit">
+        Submit Report
+    </button>
+
+</form>
+
+{% if error %}
+
+<div class="error">
+    {{ error }}
+</div>
+
+{% endif %}
+
+
+{% if success %}
+
+<div class="success">
+
+    <h2>Report Submitted ✅</h2>
+
+    <p>
+        Your Report ID:
+    </p>
+
+    <strong>
+        {{ report_id }}
+    </strong>
+
+    <p>
+        AI Category:
+        {{ ai_category }}
+    </p>
+
+    <p>
+        Risk Level:
+        {{ risk_level }}
+    </p>
+    <p>
+    AI Confidence:
+    {{ ai_confidence }}%
+    </p>
+
+    <p>
+        Risk Score:
+        {{ risk_score }}/100
+    </p>
+
+    <p>
+        Risk Status:
+        {{ risk_status }}
+    </p>
+
+    <p>
+        Recommendation:
+        {{ risk_recommendation }}
+    </p>
+
+    <p>
+        Save your Report ID to track the report.
+    </p>
+
+</div>
+
+{% endif %}
+
+</div>
+
+</body>
+
+</html>

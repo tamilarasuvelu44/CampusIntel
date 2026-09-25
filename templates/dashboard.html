@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>CampusIntel Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for(
+          'static',
+          filename='css/style.css'
+          ) }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>🛡️ CampusIntel</h1>
+
+    <p>
+        AI Incident Intelligence Dashboard
+    </p>
+
+    <a href="/admin/logout"
+       class="button">
+
+        Logout
+
+    </a>
+
+    <a href="/admin/dashboard"
+       class="button secondary">
+        Dashboard
+    </a>
+
+</header>
+
+
+<div class="container">
+
+
+    <!-- =====================
+         SUMMARY
+    ====================== -->
+
+    <h2>📊 Overview</h2>
+
+    <div class="dashboard">
+
+
+        <div class="card">
+
+            <h3>Total Reports</h3>
+
+            <h2>
+                {{ reports|length }}
+            </h2>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>High/Critical</h3>
+
+            <h2>
+
+                {{
+                    reports
+                    |selectattr("risk_level", "in",
+                    ["High", "Critical"])
+                    |list
+                    |length
+                }}
+
+            </h2>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Pending</h3>
+
+            <h2>
+
+                {{
+                    reports
+                    |selectattr("status", "equalto",
+                    "Submitted")
+                    |list
+                    |length
+                }}
+
+            </h2>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================
+         CHARTS
+    ====================== -->
+
+    <div class="charts">
+
+
+        <div class="chart-box">
+
+            <h3>Incident Categories</h3>
+
+            <canvas id="categoryChart"></canvas>
+
+        </div>
+
+
+        <div class="chart-box">
+
+            <h3>Risk Levels</h3>
+
+            <canvas id="riskChart"></canvas>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="charts">
+
+
+        <div class="chart-box">
+
+            <h3>Incident Locations</h3>
+
+            <canvas id="locationChart"></canvas>
+
+        </div>
+
+
+        <div class="chart-box">
+
+            <h3>Report Status</h3>
+
+            <canvas id="statusChart"></canvas>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================
+         REPORT TABLE
+    ====================== -->
+
+    <h2>🚨 Incident Reports</h2>
+
+
+    <table>
+
+        <tr>
+
+            <th>Report ID</th>
+
+            <th>Category</th>
+
+            <th>AI Category</th>
+
+            <th>Location</th>
+
+            <th>Risk</th>
+
+            <th>Risk Score</th>
+
+            <th>Status</th>
+
+        </tr>
+
+
+        {% for report in reports %}
+
+        <tr>
+
+            <td>
+                {{ report["report_id"] }}
+            </td>
+
+            <td>
+                {{ report["category"] }}
+            </td>
+
+            <td>
+                {{ report["ai_category"] }}
+            </td>
+
+            <td>
+                {{ report["location"] }}
+            </td>
+
+            <td>
+                <a
+                    href="{{ url_for('risk_analysis', report_id=report['report_id']) }}"
+                >
+                    {{ report["risk_level"] }}
+                </a>
+            </td>
+
+            <td>
+                {{ report["risk_score"] or 0 }}/100
+            </td>
+
+            <td>
+                {{ report["status"] }}
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</div>
+
+
+<script id="dashboard-data" type="application/json">{{ chart_data|tojson }}</script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>CampusIntel</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for(
+          'static',
+          filename='css/style.css'
+          ) }}">
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>🛡️ CampusIntel</h1>
+
+    <p>
+        AI-Powered Campus Safety & Intelligence
+    </p>
+
+</header>
+
+
+<section class="hero">
+
+    <h2>
+        Report. Protect. Analyze.
+    </h2>
+
+    <p>
+        A secure platform for campus
+        incident reporting and intelligence.
+    </p>
+
+
+    <a href="/report"
+       class="button">
+
+        Report Incident
+
+    </a>
+
+
+    <a href="/track"
+       class="button secondary">
+
+        Track Report
+
+    </a>
+
+
+    <br>
+
+
+    {% if session.get("username") %}
+
+        <p>
+            Welcome,
+            {{ session.get("username") }}
+        </p>
+
+        <a href="/logout"
+           class="button">
+
+            Logout
+
+        </a>
+
+    {% else %}
+
+        <a href="/login"
+           class="button">
+
+            Student Login
+
+        </a>
+
+        <a href="/register"
+           class="button secondary">
+
+            Register
+
+        </a>
+
+    {% endif %}
+
+
+    <br><br>
+
+
+    <a href="/admin/login">
+
+        Admin Portal
+
+    </a>
+
+</section>
+
+
+<section class="features">
+
+    <div>
+
+        <h3>🕵️ Anonymous Reporting</h3>
+
+        <p>
+            Submit campus incidents
+            without publicly exposing
+            your identity.
+        </p>
+
+    </div>
+
+
+    <div>
+
+        <h3>🤖 AI Intelligence</h3>
+
+        <p>
+            Analyze incident descriptions
+            and identify categories
+            and risk levels.
+        </p>
+
+    </div>
+
+
+    <div>
+
+        <h3>📊 Analytics</h3>
+
+        <p>
+            Help authorized staff
+            understand incident trends.
+        </p>
+
+    </div>
+
+</section>
+
+</body>
+
+</html>

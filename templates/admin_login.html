@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>CampusIntel Admin</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for(
+          'static',
+          filename='css/style.css'
+          ) }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🛡️ CampusIntel Admin</h1>
+
+    <h2>Administrator Login</h2>
+
+
+    {% with messages = get_flashed_messages() %}
+
+        {% for message in messages %}
+
+            <div class="message">
+                {{ message }}
+            </div>
+
+        {% endfor %}
+
+    {% endwith %}
+
+
+    <form method="POST">
+        <input
+    type="hidden"
+    name="csrf_token"
+    value="{{ csrf_token() }}"
+>
+
+        <label>Admin Username</label>
+
+        <input
+            type="text"
+            name="username"
+            required
+        >
+
+
+        <label>Password</label>
+
+        <input
+            type="password"
+            name="password"
+            required
+        >
+
+
+        <button type="submit">
+            Admin Login
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+
+</html>

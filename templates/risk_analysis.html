@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Risk Analysis - {{ report["report_id"] }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header>
+    <h1>CampusIntel</h1>
+    <p>AI-Assisted Risk Analysis</p>
+</header>
+
+<main class="container">
+    <a href="{{ url_for('dashboard') }}" class="button">Back to Dashboard</a>
+    <a href="{{ url_for('incident_details', report_id=report['report_id']) }}" class="button secondary">Incident Details</a>
+
+    <section class="incident-card risk-analysis" data-risk-score="{{ report['risk_score'] or 0 }}">
+        <p class="eyebrow">{{ report["report_id"] }}</p>
+        <h2>Risk Analysis</h2>
+        <p><strong>AI Category:</strong> {{ report["ai_category"] }}</p>
+        <p><strong>Current Risk:</strong> {{ report["risk_level"] }}</p>
+
+        <div class="risk-score" aria-label="Risk score {{ report['risk_score'] or 0 }} out of 100">
+            <h3>{{ report["risk_score"] or 0 }}/100</h3>
+            <p>Risk Indicator</p>
+        </div>
+
+        <h2>{{ report["risk_status"] or "Normal" }}</h2>
+        <p>{{ report["risk_recommendation"] or "No additional escalation indicated by this score." }}</p>
+        <p><strong>Escalation:</strong> {{ report["escalation_level"] or "Level 0 - Normal" }}</p>
+        <p class="disclaimer">This indicator supports administrator review. It does not make disciplinary, legal, or emergency decisions.</p>
+    </section>
+</main>
+<script src="{{ url_for('static', filename='js/risk.js') }}"></script>
+</body>
+</html>
